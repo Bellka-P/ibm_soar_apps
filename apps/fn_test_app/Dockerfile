@@ -1,5 +1,5 @@
 # Generated with resilient-sdk v51.0.7.2.16540
-# docker build -t fn_test_app:1.0.2 .
+# docker build -t fn_test_app:1.0.3 .
 ARG BASE_IMAGE_REPO=quay.io
 # BASE_IMAGE_TAG options: latest, python-311, python-312. See https://quay.io/repository/ibmresilient/soarapps-base-docker-image?tab=tags for all options
 # use --build-arg BASE_IMAGE_TAG=<tag> to set base image to be built from
