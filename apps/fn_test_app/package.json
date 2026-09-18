@@ -1,6 +1,6 @@
 {
   "name": "fn_test_app",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "description": "Minimal IBM QRadar SOAR App Host echo test application"
 }
