@@ -1,0 +1,2 @@
+resilient-circuits>=51.0.7.2.0
+pytest>=9.1.1

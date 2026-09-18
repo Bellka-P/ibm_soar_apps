@@ -1,0 +1,16 @@
+include README.md
+include Dockerfile
+include apikey_permissions.txt
+include package.json
+include requirements.txt
+recursive-include fn_test_app/util *
+include fn_test_app/LICENSE
+include doc/*.md
+include doc/screenshots/*
+include icons/*.png
+recursive-include payload_samples/*/ *.json
+include tox.ini
+recursive-include tests/ *
+
+global-exclude *.bak
+global-exclude *.py[cod]
