@@ -34,6 +34,65 @@
       "type_id": 11,
       "uuid": "20b2e8e0-9ca7-4a5f-b486-c48f355a6c01",
       "values": []
+    },
+    {
+      "allow_default_value": false,
+      "blank_option": false,
+      "calculated": false,
+      "changeable": true,
+      "chosen": false,
+      "default_chosen_by_server": false,
+      "deprecated": false,
+      "export_key": "__function/html_content",
+      "hide_notification": false,
+      "id": 1003,
+      "input_type": "text",
+      "internal": false,
+      "is_tracked": false,
+      "name": "html_content",
+      "operation_perms": {},
+      "operations": [],
+      "placeholder": "",
+      "prefix": null,
+      "read_only": false,
+      "required": "always",
+      "rich_text": false,
+      "tags": [],
+      "templates": [],
+      "text": "HTML Content",
+      "tooltip": "HTML content to return without modification",
+      "type_id": 11,
+      "uuid": "2142578b-abdb-45bd-8db1-69be167d82c3",
+      "values": []
+    },
+    {
+      "allow_default_value": false,
+      "blank_option": false,
+      "calculated": false,
+      "changeable": true,
+      "chosen": false,
+      "default_chosen_by_server": false,
+      "deprecated": false,
+      "export_key": "incident/html_report",
+      "hide_notification": false,
+      "id": 1005,
+      "input_type": "textarea",
+      "internal": false,
+      "is_tracked": false,
+      "name": "html_report",
+      "operation_perms": {},
+      "operations": [],
+      "placeholder": "",
+      "prefix": "properties",
+      "read_only": false,
+      "rich_text": true,
+      "tags": [],
+      "templates": [],
+      "text": "HTML Report",
+      "tooltip": "Rich Text output produced by the render_html test function",
+      "type_id": 0,
+      "uuid": "cece0835-c495-4409-ac4b-a153ca2178f5",
+      "values": []
     }
   ],
   "functions": [
@@ -53,6 +112,31 @@
       "view_items": [
         {
           "content": "20b2e8e0-9ca7-4a5f-b486-c48f355a6c01",
+          "element": "field_uuid",
+          "field_type": "__function",
+          "show_if": null,
+          "show_link_header": false,
+          "step_label": null
+        }
+      ],
+      "workflows": []
+    },
+    {
+      "description": {
+        "content": "Return supplied HTML unchanged for Rich Text rendering tests.",
+        "format": "text"
+      },
+      "destination_handle": "fn_test_app",
+      "display_name": "Render HTML",
+      "export_key": "render_html",
+      "id": 1004,
+      "name": "render_html",
+      "tags": [],
+      "uuid": "711ab95e-98e5-49e7-9f82-05ae8af8c314",
+      "version": 1,
+      "view_items": [
+        {
+          "content": "2142578b-abdb-45bd-8db1-69be167d82c3",
           "element": "field_uuid",
           "field_type": "__function",
           "show_if": null,

@@ -26,11 +26,14 @@ def codegen_reload_data():
             u"fn_test_app"
         ],
         "functions": [
-            u"test_echo"
+            u"test_echo",
+            u"render_html"
         ],
         "workflows": [],
         "actions": [],
-        "incident_fields": [],
+        "incident_fields": [
+            u"html_report"
+        ],
         "incident_artifact_types": [],
         "incident_types": [],
         "datatables": [],
@@ -52,6 +55,9 @@ def customization_data(client=None):
         - fn_test_app
     - Functions:
         - test_echo
+        - render_html
+    - Incident Fields:
+        - html_report
     """
 
     res_file = os.path.join(os.path.dirname(__file__), RES_FILE)
