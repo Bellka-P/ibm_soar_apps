@@ -27,12 +27,22 @@ def codegen_reload_data():
         ],
         "functions": [
             u"test_echo",
-            u"render_html"
+            u"render_html",
+            u"update_html_summary",
+            u"update_html_checklist",
+            u"update_html_evidence",
+            u"update_html_timeline",
+            u"update_html_recommendations"
         ],
         "workflows": [],
         "actions": [],
         "incident_fields": [
-            u"html_report"
+            u"html_report",
+            u"html_summary",
+            u"html_checklist",
+            u"html_evidence",
+            u"html_timeline",
+            u"html_recommendations"
         ],
         "incident_artifact_types": [],
         "incident_types": [],
@@ -56,8 +66,18 @@ def customization_data(client=None):
     - Functions:
         - test_echo
         - render_html
+        - update_html_summary
+        - update_html_checklist
+        - update_html_evidence
+        - update_html_timeline
+        - update_html_recommendations
     - Incident Fields:
         - html_report
+        - html_summary
+        - html_checklist
+        - html_evidence
+        - html_timeline
+        - html_recommendations
     """
 
     res_file = os.path.join(os.path.dirname(__file__), RES_FILE)

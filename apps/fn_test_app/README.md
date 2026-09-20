@@ -1,7 +1,7 @@
 # fn_test_app
 
 Minimal IBM QRadar SOAR App Host application used to verify the complete
-development cycle and Rich Text rendering. Current version: `1.1.0`.
+development cycle and Rich Text rendering. Current version: `1.1.1`.
 
 ## Functions
 
@@ -121,6 +121,159 @@ allowing the rest of the HTML:
   <text x="70" y="47" font-family="sans-serif" font-size="20" fill="#161616">SOAR SVG Test</text>
 </svg>
 ```
+
+## Independent HTML report blocks
+
+The app also provides five independent functions and Rich Text incident fields:
+
+| Function | Required input | Result block | Incident field |
+| --- | --- | --- | --- |
+| `update_html_summary` | `summary_html` | `summary` | `incident.properties.html_summary` |
+| `update_html_checklist` | `checklist_html` | `checklist` | `incident.properties.html_checklist` |
+| `update_html_evidence` | `evidence_html` | `evidence` | `incident.properties.html_evidence` |
+| `update_html_timeline` | `timeline_html` | `timeline` | `incident.properties.html_timeline` |
+| `update_html_recommendations` | `recommendations_html` | `recommendations` | `incident.properties.html_recommendations` |
+
+Each function returns the same standard content structure:
+
+```json
+{
+  "success": true,
+  "block": "summary",
+  "html": "<h2>Summary</h2><p>...</p>",
+  "length": 34
+}
+```
+
+The common, framework-independent implementation is
+`fn_test_app/util/html_block_service.py`. Functions return data only; updating
+the incident remains the responsibility of the Playbook post-processing step.
+
+### Playbook post-processing examples
+
+Summary, using Function Output Name `summary_result`:
+
+```python
+result = playbook.functions.results.summary_result
+
+if result.success:
+    incident.properties.html_summary = helper.createRichText(
+        result.content["html"]
+    )
+```
+
+Checklist, using Function Output Name `checklist_result`:
+
+```python
+result = playbook.functions.results.checklist_result
+
+if result.success:
+    incident.properties.html_checklist = helper.createRichText(
+        result.content["html"]
+    )
+```
+
+Evidence, using Function Output Name `evidence_result`:
+
+```python
+result = playbook.functions.results.evidence_result
+
+if result.success:
+    incident.properties.html_evidence = helper.createRichText(
+        result.content["html"]
+    )
+```
+
+Timeline, using Function Output Name `timeline_result`:
+
+```python
+result = playbook.functions.results.timeline_result
+
+if result.success:
+    incident.properties.html_timeline = helper.createRichText(
+        result.content["html"]
+    )
+```
+
+Recommendations, using Function Output Name `recommendations_result`:
+
+```python
+result = playbook.functions.results.recommendations_result
+
+if result.success:
+    incident.properties.html_recommendations = helper.createRichText(
+        result.content["html"]
+    )
+```
+
+### Test HTML values
+
+Summary:
+
+```html
+<h2>Summary</h2>
+<p>Incident analysis completed successfully.</p>
+```
+
+Checklist:
+
+```html
+<h2>Checklist</h2>
+<ul>
+  <li>Validate source IP</li>
+  <li>Validate destination IP</li>
+  <li>Check user activity</li>
+</ul>
+```
+
+Evidence:
+
+```html
+<h2>Evidence</h2>
+<table border="1" cellpadding="6">
+  <tr>
+    <th>Type</th>
+    <th>Value</th>
+  </tr>
+  <tr>
+    <td>Source IP</td>
+    <td>10.10.10.10</td>
+  </tr>
+</table>
+```
+
+Timeline:
+
+```html
+<h2>Timeline</h2>
+<ul>
+  <li>10:00 - Incident created</li>
+  <li>10:02 - Analysis started</li>
+  <li>10:05 - Analysis completed</li>
+</ul>
+```
+
+Recommendations:
+
+```html
+<h2>Recommendations</h2>
+<ol>
+  <li>Review affected account</li>
+  <li>Validate endpoint activity</li>
+  <li>Close incident if confirmed legitimate</li>
+</ol>
+```
+
+### Incident layout
+
+The app does not modify an existing Incident Layout. After installation, add
+the custom fields manually to a tab such as `Test`, in this order:
+
+1. HTML Summary
+2. HTML Checklist
+3. HTML Evidence
+4. HTML Timeline
+5. HTML Recommendations
 
 ## Test
 
