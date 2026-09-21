@@ -49,3 +49,6 @@ auth.json
 *.code-workspace
 Thumbs.db
 .DS_Store
+
+# Local-only developer manuals
+INSTRUCT_DEV.md
