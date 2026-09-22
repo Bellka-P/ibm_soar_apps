@@ -7,7 +7,7 @@
     "html": {"type": "string"},
     "length": {"type": "integer", "minimum": 0},
     "warning": {"type": "string"},
-    "type": {"const": "css_timer_experiment"}
+    "type": {"type": "string"}
   },
   "additionalProperties": false
 }

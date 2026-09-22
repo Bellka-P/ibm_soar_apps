@@ -10,7 +10,7 @@
     "remaining_text": {"type": "string"},
     "html": {"type": "string"},
     "error": {"type": "string"},
-    "type": {"const": "sla_timer"}
+    "type": {"type": "string"}
   },
   "additionalProperties": false
 }

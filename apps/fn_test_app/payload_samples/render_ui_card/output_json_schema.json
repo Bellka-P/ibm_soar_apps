@@ -6,7 +6,7 @@
     "success": {"type": "boolean"},
     "html": {"type": "string"},
     "length": {"type": "integer", "minimum": 0},
-    "type": {"const": "ui_card"}
+    "type": {"type": "string"}
   },
   "additionalProperties": false
 }
