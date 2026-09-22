@@ -1,6 +1,6 @@
 {
   "name": "fn_test_app",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "description": "IBM QRadar SOAR App Host echo, HTML, UI card, and SLA rendering test application"
 }

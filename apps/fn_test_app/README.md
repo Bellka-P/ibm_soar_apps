@@ -1,7 +1,7 @@
 # fn_test_app
 
 Minimal IBM QRadar SOAR App Host application used to verify the complete
-development cycle and Rich Text rendering. Current version: `1.2.0`.
+development cycle and Rich Text rendering. Current version: `1.2.1`.
 
 ## Functions
 
