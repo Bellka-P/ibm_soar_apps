@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "expired": false,
+  "deadline": "2026-09-22T14:42:15+00:00",
+  "remaining_seconds": 6135,
+  "remaining_text": "01:42:15",
+  "html": "<span style=\"font-weight:bold; border:1px solid #999; padding:4px 8px; border-radius:4px;\">SLA 01:42:15</span>",
+  "type": "sla_timer"
+}

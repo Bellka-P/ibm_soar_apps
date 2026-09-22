@@ -32,7 +32,8 @@ def codegen_reload_data():
             u"update_html_checklist",
             u"update_html_evidence",
             u"update_html_timeline",
-            u"update_html_recommendations"
+            u"update_html_recommendations",
+            u"render_sla_timer"
         ],
         "workflows": [],
         "actions": [],
@@ -71,6 +72,7 @@ def customization_data(client=None):
         - update_html_evidence
         - update_html_timeline
         - update_html_recommendations
+        - render_sla_timer
     - Incident Fields:
         - html_report
         - html_summary
