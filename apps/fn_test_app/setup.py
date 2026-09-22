@@ -24,15 +24,15 @@ def snake_to_camel(word):
 setup(
     name="fn_test_app",
     display_name="Test App",
-    version="1.1.1",
+    version="1.2.0",
     license="MIT",
     author="fn_test_app developers",
     author_email="",
     url="https://www.ibm.com/products/qradar-soar",
-    description="Echo and modular HTML rendering functions for IBM QRadar SOAR App Host testing",
+    description="Echo, HTML, UI card, and SLA rendering functions for IBM QRadar SOAR App Host testing",
     long_description="""A minimal IBM QRadar SOAR App Host application containing
-test_echo, render_html, and independent HTML report block functions with
-framework-independent business logic.""",
+test_echo, HTML report blocks, UI capability experiments, and static SLA
+snapshots with framework-independent business logic.""",
     install_requires=[
         "resilient-circuits>=51.0.7.2.0"
     ],

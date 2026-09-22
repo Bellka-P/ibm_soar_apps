@@ -1,7 +1,7 @@
 # fn_test_app
 
 Minimal IBM QRadar SOAR App Host application used to verify the complete
-development cycle and Rich Text rendering. Current version: `1.1.1`.
+development cycle and Rich Text rendering. Current version: `1.2.0`.
 
 ## Functions
 
@@ -274,6 +274,95 @@ the custom fields manually to a tab such as `Test`, in this order:
 3. HTML Evidence
 4. HTML Timeline
 5. HTML Recommendations
+
+## UI capability experiments
+
+Version 1.2.0 adds four test functions without changing the existing
+functions:
+
+| Function | Purpose | Incident field |
+| --- | --- | --- |
+| `render_ui_card` | Escaped, table-based, full-width incident card | `incident.properties.html_ui_card` |
+| `render_javascript_test` | Diagnostic HTML for observing sanitizer/CSP behavior | `incident.properties.html_ui_card` |
+| `render_sla_timer` | Static server-side SLA snapshot | `incident.properties.html_sla_timer` |
+| `render_css_timer_experiment` | Visual-only CSS animation test | `incident.properties.html_sla_timer` |
+
+`ui_events` and `sla_show_seconds` are Text inputs because Text is the input
+schema already verified in this package and SDK. The SLA service accepts
+`true`, `1`, `yes`, `y`, or `on` (case-insensitive) as true.
+
+All values inserted into the UI card are HTML-escaped. The table layout is the
+primary layout rather than a flex layout, so loss of flex-related CSS does not
+collapse the left details/right summary structure.
+
+### Playbook post-processing
+
+UI card, using Function Output Name `res_ui_card`:
+
+```python
+res = playbook.functions.results.res_ui_card
+
+if res.success and res.content.get("html"):
+    incident.properties.html_ui_card = helper.createRichText(
+        res.content["html"]
+    )
+```
+
+SLA snapshot, using Function Output Name `res_sla`:
+
+```python
+res = playbook.functions.results.res_sla
+
+if res.success and res.content.get("html"):
+    incident.properties.html_sla_timer = helper.createRichText(
+        res.content["html"]
+    )
+```
+
+JavaScript capability test, using Function Output Name `res_js_test`:
+
+```python
+res = playbook.functions.results.res_js_test
+
+if res.success and res.content.get("html"):
+    incident.properties.html_ui_card = helper.createRichText(
+        res.content["html"]
+    )
+```
+
+These snippets are examples only and are not installed as production
+Playbooks.
+
+### SLA date/time behavior
+
+`render_sla_timer` converts timezone-aware ISO-like values to UTC before
+calculating the difference from `datetime.now(timezone.utc)`. A value without a
+timezone is deliberately interpreted as UTC; it is never interpreted using the
+container's local timezone. The output is a static snapshot, not a live ticking
+timer. Invalid dates return a completed failure result rather than hanging.
+
+### JavaScript, CSS, and sanitizer warning
+
+`render_javascript_test` only returns a string. Python never executes the
+embedded markup. The test includes clearly identified `onclick`, `script`,
+`setInterval`, CSS animation, `details/summary`, an `about:blank` iframe, and
+inline SVG. IBM SOAR may remove any or all of these through its sanitizer or
+Content Security Policy. The function does not attempt to bypass those controls.
+
+`render_css_timer_experiment` contains no JavaScript. Its progress bar, blinking
+dot, and rotating indicator are visual experiments only and do not measure SLA
+time accurately.
+
+### Layout and custom UI limitation
+
+The installed SDK 51.0.7.2.16540 can carry a complete `layouts` customization
+object, but its `codegen` and `extract` commands expose no separate selector for
+an HTML Block, Section, Header, Custom Tab, Custom View, widget, or UI Extension.
+No supported package frontend/static-assets extension point was found in the
+installed SDK project model. Therefore this app does not modify an Incident
+Layout. A static HTML Block may be added manually in the SOAR Layout editor,
+but it is not a dynamic `incident.properties` value and cannot receive a
+FunctionResult through the field assignment shown above.
 
 ## Test
 

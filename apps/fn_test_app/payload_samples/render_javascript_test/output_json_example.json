@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "html": "<div id=\"js-test\">Static text</div>",
+  "length": 42,
+  "warning": "JavaScript may be removed by IBM SOAR sanitizer",
+  "type": "javascript_capability_test"
+}

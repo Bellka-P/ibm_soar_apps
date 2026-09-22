@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["success", "html", "length", "warning", "type"],
+  "properties": {
+    "success": {"type": "boolean"},
+    "html": {"type": "string"},
+    "length": {"type": "integer", "minimum": 0},
+    "warning": {"type": "string"},
+    "type": {"const": "css_timer_experiment"}
+  },
+  "additionalProperties": false
+}

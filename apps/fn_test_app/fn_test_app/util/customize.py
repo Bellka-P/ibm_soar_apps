@@ -32,7 +32,11 @@ def codegen_reload_data():
             u"update_html_checklist",
             u"update_html_evidence",
             u"update_html_timeline",
-            u"update_html_recommendations"
+            u"update_html_recommendations",
+            u"render_ui_card",
+            u"render_javascript_test",
+            u"render_sla_timer",
+            u"render_css_timer_experiment"
         ],
         "workflows": [],
         "actions": [],
@@ -42,7 +46,9 @@ def codegen_reload_data():
             u"html_checklist",
             u"html_evidence",
             u"html_timeline",
-            u"html_recommendations"
+            u"html_recommendations",
+            u"html_ui_card",
+            u"html_sla_timer"
         ],
         "incident_artifact_types": [],
         "incident_types": [],
@@ -71,6 +77,10 @@ def customization_data(client=None):
         - update_html_evidence
         - update_html_timeline
         - update_html_recommendations
+        - render_ui_card
+        - render_javascript_test
+        - render_sla_timer
+        - render_css_timer_experiment
     - Incident Fields:
         - html_report
         - html_summary
@@ -78,6 +88,8 @@ def customization_data(client=None):
         - html_evidence
         - html_timeline
         - html_recommendations
+        - html_ui_card
+        - html_sla_timer
     """
 
     res_file = os.path.join(os.path.dirname(__file__), RES_FILE)

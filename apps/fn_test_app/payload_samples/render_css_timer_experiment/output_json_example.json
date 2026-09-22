@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "html": "<div><style>@keyframes soarProgress { ... }</style>...</div>",
+  "length": 76,
+  "warning": "CSS animation is visual only and is not an accurate SLA countdown",
+  "type": "css_timer_experiment"
+}
