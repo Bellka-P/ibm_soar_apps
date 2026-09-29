@@ -43,14 +43,17 @@ def codegen_reload_data():
             u"html_checklist",
             u"html_evidence",
             u"html_timeline",
-            u"html_recommendations"
+            u"html_recommendations",
+            u"l1_submit_close"
         ],
         "incident_artifact_types": [],
         "incident_types": [],
         "datatables": [],
         "automatic_tasks": [],
         "scripts": [],
-        "playbooks": [],
+        "playbooks": [
+            u"l1_close_request"
+        ],
     }
 
 
@@ -80,6 +83,9 @@ def customization_data(client=None):
         - html_evidence
         - html_timeline
         - html_recommendations
+        - l1_submit_close
+    - Playbooks:
+        - l1_close_request
     """
 
     res_file = os.path.join(os.path.dirname(__file__), RES_FILE)

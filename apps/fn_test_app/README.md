@@ -275,6 +275,42 @@ the custom fields manually to a tab such as `Test`, in this order:
 4. HTML Timeline
 5. HTML Recommendations
 
+After importing the customization, edit the applicable Incident Layout and
+place `Закрыть инцидент` (`incident.properties.l1_submit_close`) immediately
+after the existing close-type field. The app intentionally does not import a
+shared production layout.
+
+### L1 close request
+
+The customization includes the enabled automatic Incident playbook
+`L1 Close Request` (`l1_close_request`). It activates only when
+`l1_submit_close == True` and `incident.plan_status == A` (open).
+
+The repository does not define the organization's existing triage, analysis,
+or FP / TP / TP Benign field. Before importing this customization, edit the
+local script `Validate and accept L1 close request` in `export.res` and replace:
+
+- `REPLACE_WITH_EXISTING_CLOSE_TYPE_API_NAME` with the existing close-type
+  incident field API name;
+- `REPLACE_WITH_EXISTING_TRIAGE_API_NAME` and
+  `REPLACE_WITH_EXISTING_ANALYSIS_API_NAME` with the existing required incident
+  field API names. Add further existing required fields to the tuple if needed.
+
+Do not add those existing field definitions to this app. Keeping only their API
+names avoids duplicate fields and leaves ownership with the current SOAR
+configuration.
+
+The first effective script execution resets `l1_submit_close` immediately. On a
+validation error it writes a note and the analyst must correct the form, set the
+flag again, and save. On success it writes a note containing the selected close
+type and UTC start time. It does not close the incident or a QRadar offense.
+
+The three intentionally empty extension points in that local script are:
+
+- `TODO(L1-CLOSE-FP)`
+- `TODO(L1-CLOSE-TP)`
+- `TODO(L1-CLOSE-TP-BENIGN)`
+
 ## Test
 
 ```shell
