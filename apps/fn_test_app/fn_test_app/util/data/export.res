@@ -480,13 +480,12 @@
       "values": []
     },
     {
-      "allow_default_value": true,
+      "allow_default_value": false,
       "blank_option": false,
       "calculated": false,
       "changeable": true,
       "chosen": false,
       "default_chosen_by_server": false,
-      "default_value": false,
       "deprecated": false,
       "export_key": "incident/l1_submit_close",
       "hide_notification": false,
@@ -749,79 +748,7 @@
   ],
   "overrides": null,
   "phases": [],
-  "playbooks": [
-    {
-      "activation_details": {
-        "activation_conditions": {
-          "conditions": [
-            {
-              "evaluation_id": null,
-              "field_name": "incident.properties.l1_submit_close",
-              "method": "equals",
-              "type": "boolean",
-              "value": true
-            },
-            {
-              "evaluation_id": null,
-              "field_name": "incident.plan_status",
-              "method": "equals",
-              "type": "text",
-              "value": "A"
-            }
-          ],
-          "custom_condition": null,
-          "logic_type": "all"
-        }
-      },
-      "activation_type": "automatic",
-      "auto_cancelation_details": {
-        "cancelation_conditions": {
-          "conditions": [],
-          "custom_condition": null,
-          "logic_type": "all"
-        }
-      },
-      "content": {
-        "content_version": 1,
-        "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bpmn2:definitions xmlns:bpmn2=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:resilient=\"http://www.resilientsystems.com/bpmn\" id=\"Definitions_l1_close_request\" targetNamespace=\"http://www.resilientsystems.com/playbook\">\n  <bpmn2:process id=\"l1_close_request\" name=\"L1 Close Request\" isExecutable=\"true\">\n    <bpmn2:startEvent id=\"StartEvent_l1_close_request\" name=\"Incident activated\">\n      <bpmn2:outgoing>Flow_start_validate</bpmn2:outgoing>\n    </bpmn2:startEvent>\n    <bpmn2:sequenceFlow id=\"Flow_start_validate\" sourceRef=\"StartEvent_l1_close_request\" targetRef=\"ScriptTask_l1_close_request\" />\n    <bpmn2:scriptTask id=\"ScriptTask_l1_close_request\" name=\"Validate and accept L1 close request\" scriptFormat=\"python3\">\n      <bpmn2:extensionElements>\n        <resilient:script uuid=\"f97a569f-81aa-4db4-9b1a-893fe606db34\" />\n      </bpmn2:extensionElements>\n      <bpmn2:incoming>Flow_start_validate</bpmn2:incoming>\n      <bpmn2:outgoing>Flow_validate_end</bpmn2:outgoing>\n    </bpmn2:scriptTask>\n    <bpmn2:sequenceFlow id=\"Flow_validate_end\" sourceRef=\"ScriptTask_l1_close_request\" targetRef=\"EndEvent_l1_close_request\" />\n    <bpmn2:endEvent id=\"EndEvent_l1_close_request\" name=\"Request recorded\">\n      <bpmn2:incoming>Flow_validate_end</bpmn2:incoming>\n    </bpmn2:endEvent>\n  </bpmn2:process>\n</bpmn2:definitions>"
-      },
-      "description": {
-        "content": "Accept an L1 close request after validating the existing close type and required triage fields. This playbook records a note only; it does not close the incident or a QRadar offense.",
-        "format": "text"
-      },
-      "display_name": "L1 Close Request",
-      "export_key": "playbook/l1_close_request",
-      "field_type_handle": "playbook_84027aac_6288_4f66_8fcc_66ac4540a073",
-      "fields_type": {
-        "display_name": "L1 Close Request",
-        "export_key": "playbook_84027aac_6288_4f66_8fcc_66ac4540a073",
-        "fields": {},
-        "type_name": "playbook_84027aac_6288_4f66_8fcc_66ac4540a073",
-        "uuid": "ac44e185-d76c-4afe-9ef7-bdd15a74efc5"
-      },
-      "id": 1026,
-      "local_scripts": [
-        {
-          "description": "Claims and validates the L1 request, records an observable note, and exposes explicit FP/TP/TP Benign extension points without closing anything.",
-          "language": "python3",
-          "name": "Validate and accept L1 close request",
-          "object_type": "incident",
-          "playbook_handle": "l1_close_request",
-          "programmatic_name": "l1_close_request_validate_and_accept",
-          "script_text": "# IMPORTANT: replace the two configuration values below with API names of\n# the EXISTING incident fields from your SOAR organization. The repository\n# does not contain the triage/analysis/close-type field definitions, so this\n# playbook deliberately does not create duplicates or guess their API names.\nCLOSE_TYPE_FIELD_API_NAME = \"REPLACE_WITH_EXISTING_CLOSE_TYPE_API_NAME\"\nREQUIRED_FIELD_API_NAMES = (\n    \"REPLACE_WITH_EXISTING_TRIAGE_API_NAME\",\n    \"REPLACE_WITH_EXISTING_ANALYSIS_API_NAME\",\n)\nALLOWED_CLOSE_TYPES = (\"FP\", \"TP\", \"TP Benign\")\n\n\ndef read_property(api_name):\n    return getattr(incident.properties, api_name, None)\n\n\ndef has_value(value):\n    if value is None:\n        return False\n    if isinstance(value, str):\n        return bool(value.strip())\n    if isinstance(value, (list, tuple, dict)):\n        return bool(value)\n    return True\n\n\ndef display_value(value):\n    label = getattr(value, \"name\", None) or getattr(value, \"label\", None)\n    return str(label if label is not None else value).strip()\n\n\n# Idempotent claim: only the first instance that still sees True processes the\n# request. Resetting immediately prevents later incident updates from starting\n# another effective execution. Validation failures also require the analyst to\n# correct the form, set the flag again, and save intentionally.\nif incident.properties.l1_submit_close is True:\n    incident.properties.l1_submit_close = False\n\n    close_type_raw = read_property(CLOSE_TYPE_FIELD_API_NAME)\n    close_type = display_value(close_type_raw) if has_value(close_type_raw) else \"\"\n    missing_fields = [\n        api_name for api_name in REQUIRED_FIELD_API_NAMES\n        if not has_value(read_property(api_name))\n    ]\n\n    errors = []\n    if close_type not in ALLOWED_CLOSE_TYPES:\n        errors.append(\"тип закрытия должен быть FP, TP или TP Benign\")\n    if missing_fields:\n        errors.append(\"не заполнены обязательные поля: {}\".format(\", \".join(missing_fields)))\n\n    if errors:\n        incident.addNote(helper.createRichText(\n            \"L1 Close Request отклонён: {}. Исправьте данные, снова установите \\u00abЗакрыть инцидент\\u00bb и сохраните инцидент.\".format(\"; \".join(errors))\n        ))\n    else:\n        # SAFE OBSERVABLE RESULT. Keep this note while implementing the real\n        # close flow, or replace it with an equivalent audit event.\n        from datetime import datetime\n        started_at = datetime.utcnow().replace(microsecond=0).isoformat() + \"Z\"\n        incident.addNote(helper.createRichText(\n            \"L1 Close Request принят. Тип закрытия: {}. Время запуска: {}. \"\n            \"Инцидент и QRadar offense не закрывались.\".format(close_type, started_at)\n        ))\n\n        if close_type == \"FP\":\n            # TODO(L1-CLOSE-FP): add the approved FP close actions here.\n            pass\n        elif close_type == \"TP\":\n            # TODO(L1-CLOSE-TP): add the approved TP close actions here.\n            pass\n        elif close_type == \"TP Benign\":\n            # TODO(L1-CLOSE-TP-BENIGN): add the approved TP Benign actions here.\n            pass\n",
-          "uuid": "f97a569f-81aa-4db4-9b1a-893fe606db34"
-        }
-      ],
-      "manual_settings": null,
-      "name": "L1 Close Request",
-      "object_type": "incident",
-      "status": "enabled",
-      "type": "playbook",
-      "uuid": "84027aac-6288-4f66-8fcc-66ac4540a073",
-      "version": 1,
-      "x_api_name": "l1_close_request"
-    }
-  ],
+  "playbooks": [],
   "scripts": [],
   "server_version": {
     "build_number": 0,

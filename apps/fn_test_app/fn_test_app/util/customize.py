@@ -51,9 +51,7 @@ def codegen_reload_data():
         "datatables": [],
         "automatic_tasks": [],
         "scripts": [],
-        "playbooks": [
-            u"l1_close_request"
-        ],
+        "playbooks": [],
     }
 
 
@@ -84,8 +82,6 @@ def customization_data(client=None):
         - html_timeline
         - html_recommendations
         - l1_submit_close
-    - Playbooks:
-        - l1_close_request
     """
 
     res_file = os.path.join(os.path.dirname(__file__), RES_FILE)

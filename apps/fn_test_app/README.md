@@ -282,34 +282,14 @@ shared production layout.
 
 ### L1 close request
 
-The customization includes the enabled automatic Incident playbook
-`L1 Close Request` (`l1_close_request`). It activates only when
-`l1_submit_close == True` and `incident.plan_status == A` (open).
+The package installs only the app-owned incident field. A Playbook is an
+internal SOAR graph and must be created in Playbook Designer and then exported
+by SOAR; a hand-authored BPMN object is not a valid app customization.
 
-The repository does not define the organization's existing triage, analysis,
-or FP / TP / TP Benign field. Before importing this customization, edit the
-local script `Validate and accept L1 close request` in `export.res` and replace:
-
-- `REPLACE_WITH_EXISTING_CLOSE_TYPE_API_NAME` with the existing close-type
-  incident field API name;
-- `REPLACE_WITH_EXISTING_TRIAGE_API_NAME` and
-  `REPLACE_WITH_EXISTING_ANALYSIS_API_NAME` with the existing required incident
-  field API names. Add further existing required fields to the tuple if needed.
-
-Do not add those existing field definitions to this app. Keeping only their API
-names avoids duplicate fields and leaves ownership with the current SOAR
-configuration.
-
-The first effective script execution resets `l1_submit_close` immediately. On a
-validation error it writes a note and the analyst must correct the form, set the
-flag again, and save. On success it writes a note containing the selected close
-type and UTC start time. It does not close the incident or a QRadar offense.
-
-The three intentionally empty extension points in that local script are:
-
-- `TODO(L1-CLOSE-FP)`
-- `TODO(L1-CLOSE-TP)`
-- `TODO(L1-CLOSE-TP-BENIGN)`
+Use [`doc/l1_close_request_playbook.md`](doc/l1_close_request_playbook.md) for
+the exact automatic-playbook settings and its Python 3 local script. After the
+playbook is created and enabled in a development organization, export it with
+the SDK into `export.res` if it must be distributed by this app.
 
 ## Test
 
