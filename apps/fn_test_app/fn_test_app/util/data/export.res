@@ -499,13 +499,12 @@
       "placeholder": "",
       "prefix": "properties",
       "read_only": false,
-      "required": "optional",
       "rich_text": false,
       "tags": [],
       "templates": [],
       "text": "Закрыть инцидент",
       "tooltip": "Установите флаг и сохраните инцидент, чтобы отправить запрос L1 на закрытие",
-      "type_id": 4,
+      "type_id": 0,
       "uuid": "c0edb35f-d86a-40f8-8758-567bf0d7cc5c",
       "values": []
     }
