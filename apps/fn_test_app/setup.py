@@ -24,7 +24,7 @@ def snake_to_camel(word):
 setup(
     name="fn_test_app",
     display_name="Test App",
-    version="1.1.5",
+    version="1.1.6",
     license="MIT",
     author="fn_test_app developers",
     author_email="",

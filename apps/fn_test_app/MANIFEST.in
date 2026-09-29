@@ -6,6 +6,7 @@ include requirements.txt
 recursive-include fn_test_app/util *
 include fn_test_app/LICENSE
 include doc/*.md
+include doc/*.html
 include doc/screenshots/*
 include icons/*.png
 recursive-include payload_samples/*/ *.json

@@ -1,7 +1,7 @@
 # fn_test_app
 
 Minimal IBM QRadar SOAR App Host application used to verify the complete
-development cycle and Rich Text rendering. Current version: `1.1.1`.
+development cycle and Rich Text rendering. Current version: `1.1.6`.
 
 ## Functions
 
@@ -290,6 +290,29 @@ Use [`doc/l1_close_request_playbook.md`](doc/l1_close_request_playbook.md) for
 the exact automatic-playbook settings and its Python 3 local script. After the
 playbook is created and enabled in a development organization, export it with
 the SDK into `export.res` if it must be distributed by this app.
+
+### Incident HTML button test
+
+The app does not package an Incident Layout because layouts are shared UI
+configuration. The exact static block for testing form and link sanitization is
+stored in [`doc/incident_close_button_test.html`](doc/incident_close_button_test.html).
+It contains no JavaScript, event handlers, API calls, or incident updates.
+
+In **Incident Layouts**, open the layout used by the test incident, add an HTML
+Block to the required tab, set its title to `Проверка кнопки закрытия`, paste
+the complete contents of that file, and save the layout.
+
+On a non-production test incident, verify all three cases separately:
+
+1. Confirm what remains visible after the layout is saved and reopened.
+2. Inspect the rendered DOM and record whether SOAR retained the `<form>`,
+   `<button>`, and `<input type="submit">` elements and their attributes.
+3. Click each retained form control and the control link. Record whether a new
+   tab opens the same-origin `/favicon.ico` resource.
+
+The standalone link is the control case. Its success does not prove that SOAR
+retains or submits HTML forms. The buttons must not be considered usable until
+the browser-side result is confirmed in the target SOAR 51.0.10 interface.
 
 ## Test
 
